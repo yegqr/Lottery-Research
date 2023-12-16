@@ -1,0 +1,58 @@
+from math import comb , sqrt
+from tabulate import tabulate
+
+
+def EU_Dreams_IRL() :
+    probabilities = []
+    ticket_price = 2.5
+    win_money_before_ticket_price = [ 0 , 0 , 0 , 0 , 2.50 , 0 , 5.29 , 0 , 40.48 , 0 , 103.49 , 0 , 120000 ]
+    win_money = [ num - ticket_price for num in win_money_before_ticket_price ]
+    mean = 0
+    var  = 0
+
+    for i in range(7) :
+        probabilities.append(round((4 * comb(6, i) * comb(34, 6 - i) / comb(40, 6) / 5), 10))
+        probabilities.append(round((1 * comb(6, i) * comb(34, 6 - i) / comb(40, 6) / 5), 10))
+
+    for win , prob in zip(win_money, probabilities) :
+        mean += win * prob
+
+    for win , prob in zip(win_money, probabilities) :
+        var += prob * ( win - mean ) ** 2
+
+    print(f"Our expected value => {mean}\nOur variance => {var}\nOur standard deviation =>  {sqrt(var)}")
+    print(probabilities, win_money)
+
+
+def SUPEER_LOTO() :
+    probabilities = []
+    ticket_price = 30
+    win_money_before_ticket_price = [ 0 , 0 , 38 , 118 , 3999 , 654986 , 2000000]
+    win_money = [ num - ticket_price for num in win_money_before_ticket_price ]
+    mean = 0
+    var = 0
+
+    for i in range(7) :
+        probabilities.append(comb( 6 , i ) * comb( 46 , 6 - i ) / comb( 52 , 6))
+
+    for win , prob in zip(win_money, probabilities):
+        mean += win * prob
+
+    for win , prob in zip(win_money, probabilities) :
+        var += prob * ( win - mean ) ** 2
+
+    Oleg_Lyashko = ( comb( 6 , 5 ) * comb( 46 , 1 ) / comb( 52 , 6) ) ** 3
+
+    print(Oleg_Lyashko)
+    print(f"Our expected value => {mean}\nOur variance => {var}\nOur standard deviation =>  {sqrt(var)}")
+    print(probabilities, win_money)
+
+
+def create_table():
+    data = [[" ", "0 right", "1 right", "2 right", "3 right", "4 right", "5 right", "6 right"],
+            ["X", -30, -30, 8, 88, 3969, 654956, 1999970],
+            ["P(X=x)", 0.4600933171959455, 0.4039843760744887, 0.1202334452602645, 0.014912675381118077,
+             0.0007625799910799017, 1.3556977619198252e-05, 4.9119484127529896e-08]]
+
+    data_transposed = list(map(list, zip(*data)))
+    print(tabulate(data_transposed, headers="firstrow", tablefmt="grid"))
